@@ -1,0 +1,8 @@
+[package]
+name = "cargo-ghp-upload"
+version = "0.1.0"
+authors = ["CAD97 <cad97@cad97.com>"]
+
+[dependencies]
+quicli = "0.2"
+# I would use git2, but libgit2 doesn't support shallow clones
