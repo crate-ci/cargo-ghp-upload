@@ -5,10 +5,12 @@
 extern crate quicli;
 use quicli::prelude::*;
 
-use std::env;
-use std::path::PathBuf;
-use std::process::Command;
-use std::str;
+extern crate fs_extra;
+
+use std::{env, fs, str};
+use std::ffi::OsString;
+use std::path::{Path, PathBuf};
+use std::process::{Command, ExitStatus};
 
 #[derive(Debug, StructOpt)]
 struct Args {
@@ -136,8 +138,100 @@ fn get_context(args: &Args) -> Result<Context> {
     Ok(context)
 }
 
-fn ghp_upload(_args: Args, _context: Context) -> Result<()> {
-    unimplemented!()
+fn require_success(status: ExitStatus) -> Result<()> {
+    if status.success() {
+        Ok(())
+    } else {
+        bail!("Child process failed: {}", status)
+    }
+}
+
+fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
+    let ghp_dir = Path::new("target/ghp");
+    if !ghp_dir.exists() {
+        // If the folder doesn't exist yet, clone it from remote
+        // ASSUME: if target/ghp exists, it's ours
+        let status = Command::new("git")
+            .args(&["clone", "--verbose"])
+            .args(&["--branch", &args.deploy_branch])
+            .args(&["--depth", "1"])
+            .args(&[origin, &args.deploy_branch])
+            .status()?;
+        if !status.success() {
+            // If clone fails, the remote doesn't exist
+            // So create a new repository to hold the documentation branch
+            require_success(Command::new("git").arg("init").arg(ghp_dir).status()?)?;
+            require_success(Command::new("git")
+                .current_dir(ghp_dir)
+                .arg("checkout")
+                .args(&["-b", &args.deploy_branch])
+                .status()?)?;
+        }
+    }
+
+    let ghp_branch_dir = ghp_dir.join(branch);
+    fs::create_dir(&ghp_branch_dir).ok(); // Create dir if not exists
+    for entry in ghp_branch_dir.read_dir()? {
+        let dir = entry?;
+        // Clean the directory, as we'll be copying new files
+        // Ignore index.html as requested for redirect page
+        if args.clobber_index || dir.file_name() != OsString::from("index.hmtl") {
+            let path = dir.path();
+            fs::remove_dir_all(&path).ok();
+            fs::remove_file(path).ok();
+        }
+    }
+
+    let upload_dir = PathBuf::from(&args.upload_directory);
+    eprintln!("Copying documentation...");
+    let mut last_progress = 0;
+    fs_extra::copy_items_with_progress(
+        &upload_dir
+            .read_dir()?
+            .map(|entry| entry.unwrap().path())
+            .collect(),
+        ghp_branch_dir,
+        &fs_extra::dir::CopyOptions::new(),
+        |info| {
+            // Some documentation can be very large, especially with a large number of dependencies
+            // Don't go silent, give updates
+            if info.copied_bytes >> 20 > last_progress {
+                last_progress = info.copied_bytes >> 20;
+                eprintln!(
+                    "~ {}/{} MiB",
+                    info.copied_bytes >> 20,
+                    info.total_bytes >> 20
+                );
+            }
+            fs_extra::dir::TransitProcessResult::ContinueOrAbort
+        },
+    )?;
+
+    // Track all changes
+    require_success(Command::new("git")
+        .current_dir(ghp_dir)
+        .args(&["add", "--verbose", "--all"])
+        .status()?)?;
+
+    // Save changes
+    // No changes fails, expected behavior
+    let commit_status = Command::new("git")
+        .current_dir(ghp_dir)
+        .args(&["commit", "--verbose"])
+        .args(&["-m", &args.message])
+        .status()?;
+
+    if commit_status.success() {
+        require_success(Command::new("git")
+            .current_dir(ghp_dir)
+            .args(&["push", origin, &args.deploy_branch])
+            .status()?)?;
+        println!("Successfully updated documentation.");
+    } else {
+        println!("Documentation already up-to-date.");
+    }
+
+    Ok(())
 }
 
 main!(|args: Args, log_level: verbosity| {
@@ -148,18 +242,46 @@ main!(|args: Args, log_level: verbosity| {
     debug!("Args");
     debug!("  deploy branch: {}", args.deploy_branch);
     debug!("  publish branches: {:?}", args.publish_branch);
-    debug!("  token: {}", if args.token.is_none() { "None" } else { "[REDACTED]" });
+    debug!(
+        "  token: {}",
+        if args.token.is_none() {
+            "None"
+        } else {
+            "[REDACTED]"
+        }
+    );
     debug!("  message: {}", args.message);
     debug!("  upload directory: {:?}", args.upload_directory);
     debug!("  clobber index: {}", args.clobber_index);
     debug!("  verbosity: {}", args.verbosity);
+
     let context = get_context(&args)?;
     debug!("Context");
     debug!("  branch: {:?}", context.branch);
     debug!("  tag: {:?}", context.tag);
-    debug!("  origin: {:?}", context.origin.as_ref().map(|it|
-        if let Some(ref token) = args.token { it.replace(token, "[REDACTED]") } else { it.clone() }
-    ));
+    debug!(
+        "  origin: {:?}",
+        context
+            .origin
+            .as_ref()
+            .map(|it| if let Some(ref token) = args.token {
+                it.replace(token, "[REDACTED]")
+            } else {
+                it.clone()
+            })
+    );
     debug!("  pull request: {}", context.pull_request);
-    ghp_upload(args, context)?;
+
+    let branch = context
+        .branch
+        .as_ref()
+        .ok_or(err_msg("No branch determined"))?;
+    let origin = context
+        .origin
+        .as_ref()
+        .ok_or(err_msg("No origin determined"))?;
+
+    if !context.pull_request && args.publish_branch.contains(&branch) {
+        ghp_upload(&branch, &origin, &args)?;
+    }
 });
