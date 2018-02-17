@@ -16,7 +16,7 @@ matrix:
     install:
     - rustup component add rustfmt-preview
     script:
-    - cargo check --tests
+    - cargo check --all-targets --tests
     - cargo fmt -- --write-mode=diff
   - rust: nightly-2018-01-14
     env: CLIPPY_VERSION=0.0.179
@@ -24,10 +24,6 @@ matrix:
     - travis_wait cargo install clippy --version $CLIPPY_VERSION || echo "clippy already installed"
     script:
     - cargo clippy -- -D clippy
-
-install:
-- rustc -Vv
-- cargo -V
 
 script:
 - cargo check --verbose
