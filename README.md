@@ -14,8 +14,8 @@ Licensed under either of
 
 at your option.
 
-(Note that this binary transitively depends on two WTFPL-licensed libraries. See
-<https://github.com/kbknapp/clap_derive/issues/8> for the existing movement to make this not an issue.)
+(Note that this binary transitively depends on two WTFPL-licensed libraries. See [kbknapp/clap_derive#8
+](https://github.com/kbknapp/clap_derive/issues/8) for the existing movement to make this not an issue.)
 
 ### Contribution
 
