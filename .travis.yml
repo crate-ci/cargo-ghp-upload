@@ -6,6 +6,9 @@ rust:
 - beta
 - nightly
 
+cache:
+  cargo: true
+
 matrix:
   include:
   - rust: 1.24.0  # `stable`: Locking down for consistent behavior
@@ -30,5 +33,8 @@ script:
 - cargo check --verbose
 - cargo test --verbose
 
-cache:
-cargo: true
+branches:
+  only:
+    - staging # bors r+
+    - trying # bors try
+    - master
