@@ -1,4 +1,8 @@
 delete_merged_branches = true
+
+pr_status = [
+    "dependency-ci",
+]
 status = [
     "continuous-integration/travis-ci/push",
 ]
