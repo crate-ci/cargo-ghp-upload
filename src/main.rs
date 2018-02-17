@@ -236,7 +236,7 @@ fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
 
 main!(|args: Args, log_level: verbosity| {
     let args = Args {
-        token: args.token.or(env::var("GH_TOKEN").ok()),
+        token: args.token.or_else(|| env::var("GH_TOKEN").ok()),
         ..args
     };
     debug!("Args");
@@ -275,13 +275,13 @@ main!(|args: Args, log_level: verbosity| {
     let branch = context
         .branch
         .as_ref()
-        .ok_or(err_msg("No branch determined"))?;
+        .ok_or_else(|| err_msg("No branch determined"))?;
     let origin = context
         .origin
         .as_ref()
-        .ok_or(err_msg("No origin determined"))?;
+        .ok_or_else(|| err_msg("No origin determined"))?;
 
-    if !context.pull_request && args.publish_branch.contains(&branch) {
-        ghp_upload(&branch, &origin, &args)?;
+    if !context.pull_request && args.publish_branch.contains(branch) {
+        ghp_upload(branch, origin, &args)?;
     }
 });
