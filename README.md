@@ -1,9 +1,10 @@
 # cargo-ghp-upload
 [![Travis Status](https://travis-ci.org/crate-ci/example-base.svg?branch=master)](https://travis-ci.org/crate-ci/cargo-ghp-upload)
-[![Dependency Status](https://dependencyci.com/github/crate-ci/example-base/badge)](https://dependencyci.com/github/crate-ci/cargo-ghp-upload)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/crate-ci/general)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/crate-ci/cargo-ghp-upload.svg)](http://isitmaintained.com/project/crate-ci/cargo-ghp-upload "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/crate-ci/cargo-ghp-upload.svg)](http://isitmaintained.com/project/crate-ci/cargo-ghp-upload "Percentage of issues still open")
+[![Dependency CI Status](https://dependencyci.com/github/crate-ci/example-base/badge)](https://dependencyci.com/github/crate-ci/cargo-ghp-upload)
+[![Dependency Status](https://deps.rs/repo/github/crate-ci/cargo-ghp-upload/status.svg)](https://deps.rs/repo/github/crate-ci/cargo-ghp-upload)
 
 ## License
 
