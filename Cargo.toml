@@ -3,6 +3,23 @@ name = "cargo-ghp-upload"
 version = "0.1.0"
 authors = ["CAD97 <cad97@cad97.com>"]
 
+include = ["/src/"]
+
+homepage = "https://github.com/crate-ci/cargo-ghp-upload"
+repository = "https://github.com/crate-ci/cargo-ghp-upload.git"
+readme = "README.md"
+
+keywords = ["CI", "Travis", "Travis-CI", "GitHub", "GitHub Pages"]
+categories = ["command-line-utilities", "development-tools::cargo-plugins"]
+
+license = "Apache-2.0/MIT"
+
+[badges]
+travis-ci = { repository = "crate-ci/cargo-ghp-upload" }
+is-it-maintained-issue-resolution = { repository = "crate-ci/cargo-ghp-upload" }
+is-it-maintained-open-issues = { repository = "crate-ci/cargo-ghp-upload" }
+maintenance = { status = "actively-developed" }
+
 [dependencies]
 quicli = "0.2"
 fs_extra = "1.1"
