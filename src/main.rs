@@ -20,7 +20,7 @@ struct Args {
     #[structopt(long = "token", help = "GitHub token to use [default: $GH_TOKEN]")]
     token: Option<String>,
     #[structopt(long = "message", help = "Use this message for the git commit",
-                default_value = r#""ghp-upload script""#)]
+                default_value = "ghp-upload script")]
     message: String,
     #[structopt(long = "directory", help = "The directory to upload from", parse(from_os_str),
                 default_value = "./target/doc")]
@@ -83,6 +83,8 @@ fn get_context(args: &Args) -> Result<Context> {
         } else {
             warn!("Unsupported CI detected; no CI features were run")
         }
+    } else {
+        info!("No CI detected; collecting relevant information from Git")
     }
 
     context.branch = context.branch.or_else(|| {
@@ -134,8 +136,8 @@ fn get_context(args: &Args) -> Result<Context> {
     Ok(context)
 }
 
-fn ghp_upload(args: Args, context: Context) -> Result<()> {
-    unimplemented!("args: {:?}, context: {:?}", args, context)
+fn ghp_upload(_args: Args, _context: Context) -> Result<()> {
+    unimplemented!()
 }
 
 main!(|args: Args, log_level: verbosity| {
@@ -143,6 +145,21 @@ main!(|args: Args, log_level: verbosity| {
         token: args.token.or(env::var("GH_TOKEN").ok()),
         ..args
     };
+    debug!("Args");
+    debug!("  deploy branch: {}", args.deploy_branch);
+    debug!("  publish branches: {:?}", args.publish_branch);
+    debug!("  token: {}", if args.token.is_none() { "None" } else { "[REDACTED]" });
+    debug!("  message: {}", args.message);
+    debug!("  upload directory: {:?}", args.upload_directory);
+    debug!("  clobber index: {}", args.clobber_index);
+    debug!("  verbosity: {}", args.verbosity);
     let context = get_context(&args)?;
+    debug!("Context");
+    debug!("  branch: {:?}", context.branch);
+    debug!("  tag: {:?}", context.tag);
+    debug!("  origin: {:?}", context.origin.as_ref().map(|it|
+        if let Some(ref token) = args.token { it.replace(token, "[REDACTED]") } else { it.clone() }
+    ));
+    debug!("  pull request: {}", context.pull_request);
     ghp_upload(args, context)?;
 });
