@@ -55,10 +55,10 @@ This crate will not change the contents of the uploaded directory.
 ```
 cargo-ghp-upload 0.1.1
 CAD97 <cad97@cad97.com>
-Upload documentation straight to GitHub Pages while maintaining branch seperation and history
+Upload documentation straight to GitHub Pages, maintaining branch seperation and history
 
 USAGE:
-    cargo-ghp-upload.exe [FLAGS] [OPTIONS]
+    cargo ghp-upload [FLAGS] [OPTIONS]
 
 FLAGS:
         --remove-index    Remove `branch/index.html` if it exists

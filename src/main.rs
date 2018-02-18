@@ -32,7 +32,7 @@ enum CargoArgs {
     GhpUpload(Args),
 }
 
-/// Upload documentation straight to GitHub Pages while maintaining branch seperation and history
+/// Upload documentation straight to GitHub Pages while maintaining branch separation and history
 #[derive(Debug, StructOpt)]
 struct Args {
     /// The branch used for GitHub Pages
