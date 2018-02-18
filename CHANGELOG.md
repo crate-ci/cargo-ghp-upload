@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Change CLI syntax so that it works as a subcommand (yanked broken 0.1)
+
 ## [0.1.1]
 
 - Removed package.include key from Cargo.toml so more things are in the cargo package
