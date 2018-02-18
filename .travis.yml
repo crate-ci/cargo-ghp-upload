@@ -37,7 +37,7 @@ matrix:
   fast_finish: true
 
 script:
-- cargo build --verbose --all-targets
+- cargo build --verbose
 - cargo test --verbose
 - cargo doc --verbose --no-deps
 
