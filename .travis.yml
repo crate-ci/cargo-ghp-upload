@@ -39,7 +39,7 @@ matrix:
 script:
 - cargo build --verbose
 - cargo test --verbose
-- cargo doc --verbose --no-deps
+- cargo rustdoc --verbose -- --document-private-items
 
 branches:
   only:
