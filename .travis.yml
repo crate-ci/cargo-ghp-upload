@@ -39,7 +39,10 @@ matrix:
 script:
 - cargo build --verbose
 - cargo test --verbose
-- if test "$TRAVIS_RUST_VERSION" != "1.22.0"; then; cargo rustdoc --verbose -- --document-private-items; fi;
+- |
+  if test "$TRAVIS_RUST_VERSION" != "1.22.0"; then
+    cargo rustdoc --verbose -- --document-private-items
+  fi
 
 branches:
   only:
