@@ -10,7 +10,7 @@ homepage = "https://github.com/crate-ci/cargo-ghp-upload"
 repository = "https://github.com/crate-ci/cargo-ghp-upload.git"
 readme = "README.md"
 
-keywords = ["CI", "Travis", "Travis-CI", "GitHub", "GitHub Pages"]
+keywords = ["CI", "Travis", "Travis-CI", "GitHub", "GitHub-Pages"]
 categories = ["command-line-utilities", "development-tools::cargo-plugins"]
 
 license = "Apache-2.0/MIT"
