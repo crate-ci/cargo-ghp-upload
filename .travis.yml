@@ -11,26 +11,36 @@ cache:
 
 matrix:
   include:
-  - rust: 1.24.0  # `stable`: Locking down for consistent behavior
+  # Warnings + Rustfmt
+  - rust: 1.24.0
     env: RUSTFLAGS="-D warnings"
     install:
     - rustup component add rustfmt-preview
     script:
     - cargo check --all-targets --tests
     - cargo fmt -- --write-mode=diff
+  # Clippy Lints
   - rust: nightly-2018-01-14
     env: CLIPPY_VERSION=0.0.179
     install:
     - travis_wait cargo install clippy --version $CLIPPY_VERSION || echo "clippy already installed"
     script:
     - cargo clippy -- -D clippy
+  # GitHub Pages
+  - env: CARGO_GHP_VERSION=0.1.0
+    install:
+    - travis_wait cargo install cargo-ghp-upload --version $CARGO_GHP_VERSION || echo "cargo-ghp-upload already installed"
+    after_success:
+    - cargo ghp-upload -vv
 
 script:
-- cargo check --verbose
+- cargo build --verbose --all-targets
 - cargo test --verbose
+- cargo doc --verbose --no-deps
 
 branches:
   only:
-    - staging # bors r+
-    - trying # bors try
-    - master
+  - staging # bors r+
+  - trying # bors try
+  - /^\d+\.\d+\.\d+(-\S*)?$/ # releases
+  - master
