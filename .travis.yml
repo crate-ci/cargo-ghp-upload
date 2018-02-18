@@ -32,6 +32,9 @@ matrix:
     - travis_wait cargo install cargo-ghp-upload --version $CARGO_GHP_VERSION || echo "cargo-ghp-upload already installed"
     after_success:
     - cargo ghp-upload -vv
+  allow_failures:
+  - env: CARGO_GHP_VERSION=0.1.0
+  fast_finish: true
 
 script:
 - cargo build --verbose --all-targets
