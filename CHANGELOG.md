@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.0]
+
 - Change CLI syntax so that it works as a subcommand (yanked broken 0.1)
 
 ## [0.1.1]
@@ -27,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Now can infer much more context from Git if not in Travis-like environment
 - Default commit message changed
 
-  [Unreleased]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.1.1...master
+  [Unreleased]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.2.0...master
+  [0.2.0]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.1.1...0.2.0
   [0.1.1]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.1.0...0.1.1
   [0.1.0]: https://github.com/crate-ci/cargo-ghp-upload/tree/0.1.0
