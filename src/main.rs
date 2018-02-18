@@ -183,7 +183,7 @@ fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
             .args(&["clone", "--verbose"])
             .args(&["--branch", &args.deploy_branch])
             .args(&["--depth", "1"])
-            .args(&[origin, &args.deploy_branch])
+            .args(&[origin, ghp_dir])
             .status()?;
         if !status.success() {
             // If clone fails, the remote doesn't exist
