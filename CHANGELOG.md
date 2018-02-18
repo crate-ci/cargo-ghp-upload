@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.1.1]
+
+- Removed package.include key from Cargo.toml so more things are in the cargo package
+- Improvements to CI
+
 ## [0.1.0]
 
 - Split out of [roblabla/cargo-travis](https://github.com/roblabla/cargo-travis)
@@ -20,5 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Now can infer much more context from Git if not in Travis-like environment
 - Default commit message changed
 
-  [Unreleased]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.1.0...master
+  [Unreleased]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.1.1...master
+  [0.1.1]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.1.0...0.1.1
   [0.1.0]: https://github.com/crate-ci/cargo-ghp-upload/tree/0.1.0
