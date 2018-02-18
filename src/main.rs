@@ -15,7 +15,6 @@
 #![forbid(future_incompatible)]
 #![warn(warnings)]
 
-#[macro_use]
 extern crate quicli;
 use quicli::prelude::*;
 
@@ -26,7 +25,13 @@ use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus};
 
-/// Upload documentation straight to GitHub Pages while maintaining branch seperation and history
+#[derive(Debug, StructOpt)]
+#[structopt(raw(bin_name = r#""cargo""#))]
+enum CargoArgs {
+    #[structopt(name = "ghp-upload")] GhpUpload(Args),
+}
+
+/// Upload documentation straight to GitHub Pages while maintaining branch separation and history
 #[derive(Debug, StructOpt)]
 struct Args {
     /// The branch used for GitHub Pages
@@ -252,11 +257,26 @@ fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
     Ok(())
 }
 
-main!(|args: Args, log_level: verbosity| {
+fn run() -> Result<()> {
+    let CargoArgs::GhpUpload(args) = CargoArgs::from_args();
     let args = Args {
         token: args.token.or_else(|| env::var("GH_TOKEN").ok()),
         ..args
     };
+
+    LoggerBuiler::new()
+        .filter(
+            None,
+            match args.verbosity {
+                0 => LogLevel::Error,
+                1 => LogLevel::Warn,
+                2 => LogLevel::Info,
+                3 => LogLevel::Debug,
+                _ => LogLevel::Trace,
+            }.to_level_filter(),
+        )
+        .try_init()?;
+
     debug!("Args");
     debug!("  deploy branch: {}", args.deploy_branch);
     debug!("  publish branches: {:?}", args.publish_branch);
@@ -274,6 +294,7 @@ main!(|args: Args, log_level: verbosity| {
     debug!("  verbosity: {}", args.verbosity);
 
     let context = get_context(&args)?;
+
     debug!("Context");
     debug!("  branch: {:?}", context.branch);
     debug!("  tag: {:?}", context.tag);
@@ -302,4 +323,16 @@ main!(|args: Args, log_level: verbosity| {
     if !context.pull_request && args.publish_branch.contains(branch) {
         ghp_upload(branch, origin, &args)?;
     }
-});
+
+    Ok(())
+}
+
+fn main() {
+    match run() {
+        Ok(_) => {}
+        Err(e) => {
+            error!("{}", e);
+            ::std::process::exit(1);
+        }
+    }
+}

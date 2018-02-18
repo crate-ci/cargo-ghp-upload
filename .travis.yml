@@ -27,19 +27,22 @@ matrix:
     script:
     - cargo clippy -- -D clippy
   # GitHub Pages
-  - env: CARGO_GHP_VERSION=0.1.0
+  - env: CARGO_GHP_VERSION=0.2.0
     install:
     - travis_wait cargo install cargo-ghp-upload --version $CARGO_GHP_VERSION || echo "cargo-ghp-upload already installed"
     after_success:
     - cargo ghp-upload -vv
   allow_failures:
-  - env: CARGO_GHP_VERSION=0.1.0
+  - env: CARGO_GHP_VERSION=0.2.0
   fast_finish: true
 
 script:
 - cargo build --verbose
 - cargo test --verbose
-- cargo doc --verbose --no-deps
+- |
+  if test "$TRAVIS_RUST_VERSION" != "1.22.0"; then
+    cargo rustdoc --verbose -- --document-private-items
+  fi
 
 branches:
   only:

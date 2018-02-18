@@ -1,8 +1,8 @@
 [package]
 name = "cargo-ghp-upload"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["CAD97 <cad97@cad97.com>"]
-description = "Upload documentation straight to GitHub Pages, maintaining branch seperation and history"
+description = "Upload documentation straight to GitHub Pages, maintaining branch separation and history"
 
 homepage = "https://github.com/crate-ci/cargo-ghp-upload"
 repository = "https://github.com/crate-ci/cargo-ghp-upload.git"
