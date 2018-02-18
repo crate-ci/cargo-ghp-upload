@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Fixed builds on Travis always being picked up as a tag build instead of a branch build
+- Added `--publish-tags` to publish docs for releases
+
 ## [0.2.0]
 
 - Change CLI syntax so that it works as a subcommand (yanked broken 0.1)
