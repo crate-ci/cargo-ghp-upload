@@ -28,8 +28,7 @@ use std::process::{Command, ExitStatus};
 #[derive(Debug, StructOpt)]
 #[structopt(raw(bin_name = r#""cargo""#))]
 enum CargoArgs {
-    #[structopt(name = "ghp-upload")]
-    GhpUpload(Args),
+    #[structopt(name = "ghp-upload")] GhpUpload(Args),
 }
 
 /// Upload documentation straight to GitHub Pages while maintaining branch separation and history
