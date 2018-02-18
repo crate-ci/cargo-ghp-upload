@@ -40,6 +40,9 @@ struct Args {
     /// Branches to publish
     #[structopt(long = "branch", default_value = "master")]
     publish_branch: Vec<String>,
+    /// Publish documentation for tag builds (GitHub releases)
+    #[structopt(short = "r", long = "publish-tags")]
+    publish_tags: bool,
 
     /// GitHub Personal Access token
     #[structopt(long = "token", help = "GitHub Personal Access token [default: $GH_TOKEN]")]
@@ -316,14 +319,19 @@ fn run() -> Result<()> {
     let branch = context
         .branch
         .as_ref()
-        .ok_or_else(|| err_msg("No branch determined"))?;
+        .or_else(|| context.tag.as_ref())
+        .ok_or_else(|| err_msg("No branch/tag determined"))?;
     let origin = context
         .origin
         .as_ref()
         .ok_or_else(|| err_msg("No origin determined"))?;
 
-    if !context.pull_request && args.publish_branch.contains(branch) {
+    if context.pull_request {
+        eprintln!("Skipping Pull Request build");
+    } else if (args.publish_tags && context.tag.is_some()) || args.publish_branch.contains(branch) {
         ghp_upload(branch, origin, &args)?;
+    } else {
+        eprintln!("Skipping build; not configured to build {}", branch)
     }
 
     Ok(())

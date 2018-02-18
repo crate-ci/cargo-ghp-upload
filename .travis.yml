@@ -27,13 +27,13 @@ matrix:
     script:
     - cargo clippy -- -D clippy
   # GitHub Pages
-  - env: CARGO_GHP_VERSION=0.2.0
+  - env: CARGO_GHP_VERSION=0.3.0
     install:
     - travis_wait cargo install cargo-ghp-upload --version $CARGO_GHP_VERSION || echo "cargo-ghp-upload already installed"
     after_success:
-    - cargo ghp-upload -vvvv
+    - cargo ghp-upload -vvvr
   allow_failures:
-  - env: CARGO_GHP_VERSION=0.2.0
+  - env: CARGO_GHP_VERSION=0.3.0
   fast_finish: true
 
 script:
