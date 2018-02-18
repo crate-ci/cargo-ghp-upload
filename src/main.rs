@@ -92,9 +92,11 @@ fn get_context(args: &Args) -> Result<Context> {
                 error!("(If this is a false positive, open an issue for us)");
                 bail!("Insecure environment found; stopping");
             }
-            context.tag = env::var("TRAVIS_TAG").ok();
-            if context.tag.is_none() {
+            let tag = env::var("TRAVIS_TAG")?;
+            if tag.is_empty() {
                 context.branch = Some(env::var("TRAVIS_BRANCH")?);
+            } else {
+                context.tag = Some(tag);
             }
             context.pull_request = env::var("TRAVIS_PULL_REQUEST")? != "false";
             let repo_slug = env::var("TRAVIS_REPO_SLUG")?;
