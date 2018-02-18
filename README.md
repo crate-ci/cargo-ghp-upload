@@ -5,6 +5,7 @@
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/crate-ci/cargo-ghp-upload.svg)](http://isitmaintained.com/project/crate-ci/cargo-ghp-upload "Percentage of issues still open")
 [![Dependency CI Status](https://dependencyci.com/github/crate-ci/example-base/badge)](https://dependencyci.com/github/crate-ci/cargo-ghp-upload)
 [![Dependency Status](https://deps.rs/repo/github/crate-ci/cargo-ghp-upload/status.svg)](https://deps.rs/repo/github/crate-ci/cargo-ghp-upload)
+[![Crates.io](https://img.shields.io/crates/v/cargo-ghp-upload.svg)](https://crates.io/crates/cargo-ghp-upload)
 
 ## Usage
 
