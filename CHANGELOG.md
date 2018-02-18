@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.3.0]
+
 - Fixed builds on Travis always being picked up as a tag build instead of a branch build
-- Added `--publish-tags` to publish docs for releases
+- Added `--publish-tags` to publish docs for tags (GitHub releases)
 
 ## [0.2.0]
 
@@ -32,7 +34,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Now can infer much more context from Git if not in Travis-like environment
 - Default commit message changed
 
-  [Unreleased]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.2.0...master
+  [Unreleased]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.3.0...master
+  [0.3.0]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.2.0...0.3.0
   [0.2.0]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.1.1...0.2.0
   [0.1.1]: https://github.com/crate-ci/cargo-ghp-upload/compare/0.1.0...0.1.1
   [0.1.0]: https://github.com/crate-ci/cargo-ghp-upload/tree/0.1.0

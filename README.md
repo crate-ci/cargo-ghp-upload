@@ -15,7 +15,7 @@ To do that, you can minimally include the following in your Travis matrix:
 ```yaml
 matrix:
   include:
-  - env: GHP_UPLOAD_VERSION=0.2.0
+  - env: GHP_UPLOAD_VERSION=0.3.0
     install:
     - cargo install --version $GHP_UPLOAD_VERSION cargo-ghp-upload
     script:
@@ -53,9 +53,9 @@ This crate will not change the contents of the uploaded directory.
 ## Customization
 
 ```
-cargo-ghp-upload 0.2.0
+cargo-ghp-upload 0.3.0
 CAD97 <cad97@cad97.com>
-Upload documentation straight to GitHub Pages, maintaining branch seperation and history
+Upload documentation straight to GitHub Pages, maintaining branch separation and history
 
 USAGE:
     cargo ghp-upload [FLAGS] [OPTIONS]
@@ -63,6 +63,7 @@ USAGE:
 FLAGS:
         --remove-index    Remove `branch/index.html` if it exists
     -h, --help            Prints help information
+    -r, --publish-tags    Publish documentation for tag builds (GitHub releases)
     -V, --version         Prints version information
     -v, --verbose         Enable more verbose logging [repeatable (max 4)]
 
