@@ -6,12 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.1.1]
+## [0.1.1] [YANKED: broken]
 
 - Removed package.include key from Cargo.toml so more things are in the cargo package
 - Improvements to CI
 
-## [0.1.0]
+## [0.1.0] [YANKED: broken]
 
 - Split out of [roblabla/cargo-travis](https://github.com/roblabla/cargo-travis)
   - Includes rename from `cargo-doc-upload` to `cargo-ghp-upload`
