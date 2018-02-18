@@ -54,6 +54,7 @@ This crate will not change the contents of the uploaded directory.
 ```
 cargo-ghp-upload 0.1.0
 CAD97 <cad97@cad97.com>
+Upload documentation straight to GitHub Pages while maintaining branch seperation and history
 
 USAGE:
     cargo-ghp-upload.exe [FLAGS] [OPTIONS]
@@ -65,11 +66,11 @@ FLAGS:
     -v, --verbose         Enable more verbose logging [repeatable (max 4)]
 
 OPTIONS:
-        --deploy <deploy_branch>          Deploy to the given branch [default: gh-pages]
-        --message <message>               Use this message for the git commit [default: ghp-upload script]
-        --branch <publish_branch>...      Publish for this branch [default: master]
-        --token <token>                   GitHub token to use [default: $GH_TOKEN]
-        --directory <upload_directory>    The directory to upload from [default: ./target/doc]
+        --deploy <deploy_branch>          The branch used for GitHub Pages [default: gh-pages]
+        --message <message>               Message for the git commit [default: ghp-upload script]
+        --branch <publish_branch>...      Branches to publish [default: master]
+        --token <token>                   GitHub Personal Access token [default: $GH_TOKEN]
+        --directory <upload_directory>    The directory to publish the files from [default: ./target/doc]
 ```
 
 The power of `ghp-upload` comes from further customization from the default.

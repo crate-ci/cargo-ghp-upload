@@ -26,20 +26,24 @@ use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus};
 
+/// Upload documentation straight to GitHub Pages while maintaining branch seperation and history
 #[derive(Debug, StructOpt)]
 struct Args {
-    #[structopt(long = "deploy", help = "Deploy to the given branch", default_value = "gh-pages")]
+    /// The branch used for GitHub Pages
+    #[structopt(long = "deploy", default_value = "gh-pages")]
     deploy_branch: String,
-    #[structopt(long = "branch", help = "Publish for this branch", default_value = "master")]
+    /// Branches to publish
+    #[structopt(long = "branch", default_value = "master")]
     publish_branch: Vec<String>,
 
-    #[structopt(long = "token", help = "GitHub token to use [default: $GH_TOKEN]")]
+    /// GitHub Personal Access token
+    #[structopt(long = "token", help = "GitHub Personal Access token [default: $GH_TOKEN]")]
     token: Option<String>,
-    #[structopt(long = "message", help = "Use this message for the git commit",
-                default_value = "ghp-upload script")]
+    /// Message for the git commit
+    #[structopt(long = "message", default_value = "ghp-upload script")]
     message: String,
-    #[structopt(long = "directory", help = "The directory to upload from", parse(from_os_str),
-                default_value = "./target/doc")]
+    /// The directory to publish the files from
+    #[structopt(long = "directory", parse(from_os_str), default_value = "./target/doc")]
     upload_directory: PathBuf,
 
     #[structopt(long = "remove-index", help = "Remove `branch/index.html` if it exists")]
