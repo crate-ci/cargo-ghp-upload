@@ -95,7 +95,7 @@ Or do both, combine them into one directory, and serve your guide-style and refe
 
 ## Stability
 
-This project follows Semantic Versioning with the `0.MAJOR.MINOR` extension. (This is effectively what `cargo` uses.)
+This project follows Semantic Versioning with the `0.MAJOR.PATCH` extension. (This is effectively what `cargo` uses.)
 The `MAJOR` version will be incremented for major changes as defined in [Rust RFC #1105
 ](https://rust-lang.github.io/rfcs/1105-api-evolution.html). The `MINOR` version will be incremented for minor changes
 as defined in Rust RFC #1105. All other changes will be as specified in the Semantic Versioning spec.
@@ -106,7 +106,7 @@ New arguments will be a minor version, and removed or changed meaning will be a 
 Upping the required minimum version of Rust is considered a minor breaking change, and will be noted in the changelog.
 `cargo-ghp-pages` will always support the current stable and at least two stable versions back.
 If this sliding guarantee is not enough for your use case (such as pinned CI builds),
-we recommend using a `~` version requirement (after 1.0) or pinning the exact version.
+we recommend using a `~` version requirement or pinning the exact version.
 
 The current minimum Rust version is 1.22.0.
 
