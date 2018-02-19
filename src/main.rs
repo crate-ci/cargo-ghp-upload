@@ -96,11 +96,10 @@ fn get_context(args: &Args) -> Result<Context> {
                 bail!("Insecure environment found; stopping");
             }
             let tag = env::var("TRAVIS_TAG")?;
-            if tag.is_empty() {
-                context.branch = Some(env::var("TRAVIS_BRANCH")?);
-            } else {
+            if !tag.is_empty() {
                 context.tag = Some(tag);
             }
+            context.branch = Some(env::var("TRAVIS_BRANCH")?);
             context.pull_request = env::var("TRAVIS_PULL_REQUEST")? != "false";
             let repo_slug = env::var("TRAVIS_REPO_SLUG")?;
             context.origin = Some(if let Some(ref token) = args.token {
@@ -319,7 +318,6 @@ fn run() -> Result<()> {
     let branch = context
         .branch
         .as_ref()
-        .or_else(|| context.tag.as_ref())
         .ok_or_else(|| err_msg("No branch/tag determined"))?;
     let origin = context
         .origin
