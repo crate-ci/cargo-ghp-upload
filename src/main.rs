@@ -273,8 +273,6 @@ fn run() -> Result<()> {
         token: args.token.or_else(|| env::var("GH_TOKEN").ok()),
         ..args
     };
-    println!("{}", args.clobber_index);
-    bail!("");
 
     LoggerBuiler::new()
         .filter(
