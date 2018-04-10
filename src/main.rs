@@ -175,7 +175,13 @@ fn require_success(status: ExitStatus) -> Result<()> {
 
 fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
     let ghp_dir = Path::new("target/ghp");
-    if !ghp_dir.exists() {
+    if ghp_dir.exists() {
+        // If the directory exists, make sure it's up to date
+        require_success(Command::new("git")
+            .current_dir(ghp_dir)
+            .arg("pull")
+            .status()?)?;
+    } else {
         // If the folder doesn't exist yet, clone it from remote
         // ASSUME: if target/ghp exists, it's ours
         let status = Command::new("git")
@@ -267,6 +273,8 @@ fn run() -> Result<()> {
         token: args.token.or_else(|| env::var("GH_TOKEN").ok()),
         ..args
     };
+    println!("{}", args.clobber_index);
+    bail!("");
 
     LoggerBuiler::new()
         .filter(
