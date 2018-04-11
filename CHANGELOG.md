@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed #34: If the remote gh-pages branch is updated between executions,
              ghp-upload will now pull the changes instead of overwriting them
 
+## [0.3.3] [YANKED]
+
+Published a stubbed out `main()` accidentally
+
 ## [0.3.2]
 
 - Tag builds now publish to `/[tag]/` instead of `/HEAD/`
