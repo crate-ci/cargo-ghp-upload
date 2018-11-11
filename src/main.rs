@@ -208,7 +208,7 @@ fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
         let dir = entry?;
         // Clean the directory, as we'll be copying new files
         // Ignore index.html as requested for redirect page
-        if args.clobber_index || dir.file_name() != OsString::from("index.hmtl") {
+        if args.clobber_index || dir.file_name() != OsString::from("index.html") {
             let path = dir.path();
             fs::remove_dir_all(&path).ok();
             fs::remove_file(path).ok();
