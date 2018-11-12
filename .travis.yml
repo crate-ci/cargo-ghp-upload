@@ -12,22 +12,18 @@ cache:
 matrix:
   include:
   # Warnings + Rustfmt
-  - rust: 1.24.0
-    env: RUSTFLAGS="-D warnings"
+  - rust: 1.30.1
+    name: style
     install:
     - rustup component add rustfmt-preview
+    - rustup component add clippy-preview
     script:
-    - cargo check --all-targets --tests
-    - cargo fmt -- --write-mode=diff
-  # Clippy Lints
-  - rust: nightly-2018-01-14
-    env: CLIPPY_VERSION=0.0.179
-    install:
-    - travis_wait cargo install clippy --version $CLIPPY_VERSION || echo "clippy already installed"
-    script:
-    - cargo clippy -- -D clippy
+    - cargo clippy --all-targets --tests -- -D warnings
+    - cargo fmt -- --check
   # GitHub Pages
   - env: CARGO_GHP_VERSION=0.3.2
+    script:
+    - cargo rustdoc --verbose -- --document-private-items
     install:
     - cargo install cargo-ghp-upload --version $CARGO_GHP_VERSION || echo "cargo-ghp-upload already installed"
     after_success:
@@ -39,10 +35,6 @@ matrix:
 script:
 - cargo build --verbose
 - cargo test --verbose
-- |
-  if test "$TRAVIS_RUST_VERSION" != "1.22.0"; then
-    cargo rustdoc --verbose -- --document-private-items
-  fi
 
 branches:
   only:

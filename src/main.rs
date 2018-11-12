@@ -12,23 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#![forbid(future_incompatible)]
-#![warn(warnings)]
-
 extern crate quicli;
 use quicli::prelude::*;
 
 extern crate fs_extra;
 
-use std::{env, fs, str};
 use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus};
+use std::{env, fs, str};
 
 #[derive(Debug, StructOpt)]
 #[structopt(raw(bin_name = r#""cargo""#))]
 enum CargoArgs {
-    #[structopt(name = "ghp-upload")] GhpUpload(Args),
+    #[structopt(name = "ghp-upload")]
+    GhpUpload(Args),
 }
 
 /// Upload documentation straight to GitHub Pages while maintaining branch separation and history
@@ -45,20 +43,34 @@ struct Args {
     publish_tags: bool,
 
     /// GitHub Personal Access token
-    #[structopt(long = "token", help = "GitHub Personal Access token [default: $GH_TOKEN]")]
+    #[structopt(
+        long = "token",
+        help = "GitHub Personal Access token [default: $GH_TOKEN]"
+    )]
     token: Option<String>,
     /// Message for the git commit
     #[structopt(long = "message", default_value = "ghp-upload script")]
     message: String,
     /// The directory to publish the files from
-    #[structopt(long = "directory", parse(from_os_str), default_value = "./target/doc")]
+    #[structopt(
+        long = "directory",
+        parse(from_os_str),
+        default_value = "./target/doc"
+    )]
     upload_directory: PathBuf,
 
-    #[structopt(long = "remove-index", help = "Remove `branch/index.html` if it exists")]
+    #[structopt(
+        long = "remove-index",
+        help = "Remove `branch/index.html` if it exists"
+    )]
     clobber_index: bool,
 
-    #[structopt(long = "verbose", short = "v", parse(from_occurrences),
-                help = "Enable more verbose logging [repeatable (max 4)]")]
+    #[structopt(
+        long = "verbose",
+        short = "v",
+        parse(from_occurrences),
+        help = "Enable more verbose logging [repeatable (max 4)]"
+    )]
     verbosity: u8,
 }
 
@@ -177,10 +189,12 @@ fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
     let ghp_dir = Path::new("target/ghp");
     if ghp_dir.exists() {
         // If the directory exists, make sure it's up to date
-        require_success(Command::new("git")
-            .current_dir(ghp_dir)
-            .arg("pull")
-            .status()?)?;
+        require_success(
+            Command::new("git")
+                .current_dir(ghp_dir)
+                .arg("pull")
+                .status()?,
+        )?;
     } else {
         // If the folder doesn't exist yet, clone it from remote
         // ASSUME: if target/ghp exists, it's ours
@@ -194,11 +208,13 @@ fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
             // If clone fails, the remote doesn't exist
             // So create a new repository to hold the documentation branch
             require_success(Command::new("git").arg("init").arg(ghp_dir).status()?)?;
-            require_success(Command::new("git")
-                .current_dir(ghp_dir)
-                .arg("checkout")
-                .args(&["-b", &args.deploy_branch])
-                .status()?)?;
+            require_success(
+                Command::new("git")
+                    .current_dir(ghp_dir)
+                    .arg("checkout")
+                    .args(&["-b", &args.deploy_branch])
+                    .status()?,
+            )?;
         }
     }
 
@@ -208,7 +224,7 @@ fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
         let dir = entry?;
         // Clean the directory, as we'll be copying new files
         // Ignore index.html as requested for redirect page
-        if args.clobber_index || dir.file_name() != OsString::from("index.hmtl") {
+        if args.clobber_index || dir.file_name() != OsString::from("index.html") {
             let path = dir.path();
             fs::remove_dir_all(&path).ok();
             fs::remove_file(path).ok();
@@ -241,10 +257,12 @@ fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
     )?;
 
     // Track all changes
-    require_success(Command::new("git")
-        .current_dir(ghp_dir)
-        .args(&["add", "--verbose", "--all"])
-        .status()?)?;
+    require_success(
+        Command::new("git")
+            .current_dir(ghp_dir)
+            .args(&["add", "--verbose", "--all"])
+            .status()?,
+    )?;
 
     // Save changes
     // No changes fails, expected behavior
@@ -255,10 +273,12 @@ fn ghp_upload(branch: &str, origin: &str, args: &Args) -> Result<()> {
         .status()?;
 
     if commit_status.success() {
-        require_success(Command::new("git")
-            .current_dir(ghp_dir)
-            .args(&["push", origin, &args.deploy_branch])
-            .status()?)?;
+        require_success(
+            Command::new("git")
+                .current_dir(ghp_dir)
+                .args(&["push", origin, &args.deploy_branch])
+                .status()?,
+        )?;
         println!("Successfully updated documentation.");
     } else {
         println!("Documentation already up-to-date.");
@@ -284,8 +304,7 @@ fn run() -> Result<()> {
                 3 => LogLevel::Debug,
                 _ => LogLevel::Trace,
             }.to_level_filter(),
-        )
-        .try_init()?;
+        ).try_init()?;
 
     debug!("Args");
     debug!("  deploy branch: {}", args.deploy_branch);
