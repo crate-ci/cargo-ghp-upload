@@ -20,6 +20,6 @@ is-it-maintained-open-issues = { repository = "crate-ci/cargo-ghp-upload" }
 maintenance = { status = "actively-developed" }
 
 [dependencies]
-quicli = "0.2"
+quicli = "0.4"
 fs_extra = "1.1"
 # I would use git2, but libgit2 doesn't support shallow clones
